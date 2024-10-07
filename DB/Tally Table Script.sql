@@ -79,3 +79,14 @@ CREATE TABLE Payments (
     method ENUM('Cash', 'Credit Card', 'Bank Transfer') NOT NULL,
     FOREIGN KEY (invoice_id) REFERENCES Invoices(invoice_id) ON DELETE CASCADE
 );
+
+CREATE TABLE monthly_data (
+    id SERIAL PRIMARY KEY,
+    month VARCHAR(20) NOT NULL,
+    year INT NOT NULL,
+    purchase DECIMAL(10, 2),
+    sales DECIMAL(10, 2),
+    inventory_levels DECIMAL(10, 2),
+    profit DECIMAL(10, 2),
+    new_customers INT
+);

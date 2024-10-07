@@ -1,0 +1,13 @@
+DROP PROCEDURE IF EXISTS `GetCompanyData`()
+CREATE PROCEDURE `GetCompanyData`()
+BEGIN
+  SELECT 
+	month
+	, Year
+    , purchase
+    , sales
+    , inventory_levels
+    , profit
+    , new_customers
+FROM accounting.monthly_data;
+END
