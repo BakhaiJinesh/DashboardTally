@@ -30,7 +30,7 @@ VALUES ('CEO', 'ceo@example.com', 'securepassword'),
 INSERT INTO ModuleTransaction (TransactionType, Description) 
 VALUES ('Purchase', 'Product purchase transaction'),
        ('Sale', 'Product sale transaction'),
-       ('Exhnage', 'Echnage Product transaction'),
+       ('Exchange', 'Exchange Product transaction'),
        ('Return', 'Return purchase transaction');
 
 
