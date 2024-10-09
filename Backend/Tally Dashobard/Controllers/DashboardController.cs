@@ -1,22 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using Tally_Dashobard.Data;
+using Tally_Dashobard.DTO;
 
 namespace Tally_Dashobard.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class HomeController : ControllerBase
+    public class DashboardController : ControllerBase
     {
         private readonly GetDashboard _dashboardDataAccess;
+        private readonly LoginDetails _loginDetails;
 
-        public HomeController(GetDashboard dashboardDataAccess)
+        public DashboardController(GetDashboard dashboardDataAccess, LoginDetails loginDetails)
         {
             _dashboardDataAccess = dashboardDataAccess;
+            _loginDetails = loginDetails;
         }
 
         [HttpGet]
-        public IActionResult GetYourModels()
+        [Route("GetDashboard")]
+        public IActionResult GetDashboardData()
         {
             DataTable dashboardData = _dashboardDataAccess.GetDashboardData();
 
@@ -33,6 +37,21 @@ namespace Tally_Dashobard.Controllers
                 result.Add(dict);
             }
 
+            // Return the result as JSON
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("Login")]
+        public IActionResult LoginStatus(LoginDTO loginDTO)
+        {
+            string username = loginDTO.UserName;
+            string password = loginDTO.Password;
+
+            var result = _loginDetails.LoginDetailsStatus(username, password);
+
+
+           
             // Return the result as JSON
             return Ok(result);
         }

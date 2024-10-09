@@ -3,32 +3,36 @@ using System.Data;
 
 namespace Tally_Dashobard.Data
 {
-    public class GetDashboard
+    public class LoginDetails
     {
         private string _connectionString;
+        private readonly AppDbContext appDbContext;
 
-        public GetDashboard()
+        public LoginDetails(AppDbContext appDbContext)
         {
             // Connection string for MySQL database
             _connectionString = "Server=localhost;Database=accounting;User ID=root;Password=Admin;";
+            this.appDbContext = appDbContext; 
         }
 
-        public DataTable GetDashboardData()
-        {
-            DataTable dataTable = new DataTable();
-
+        public string LoginDetailsStatus(string username,string password) 
+        { 
+            string result = "Invalid User";
+            
+            
             using (MySqlConnection connection = new MySqlConnection(_connectionString))
             {
                 try
                 {
                     connection.Open();
-                    using (MySqlCommand command = new MySqlCommand("CALL GetCompanyData();", connection))
+                    var user = appDbContext.users
+                              .FirstOrDefault(user => user.UserName == username && user.Password == password);
+
+                    if (user != null)
                     {
-                        using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
-                        {
-                            adapter.Fill(dataTable);
-                        }
+                        result = user.UserID.ToString(); // Assuming UserID is what you want to return on success
                     }
+
                 }
                 catch (Exception ex)
                 {
@@ -37,7 +41,7 @@ namespace Tally_Dashobard.Data
                 }
             }
 
-            return dataTable;
+            return result;
         }
     }
 }

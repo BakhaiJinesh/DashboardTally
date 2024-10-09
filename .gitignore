@@ -1,5 +1,8 @@
 # Visual Studio
+.vs
 .vs/
+.bin
+.obj
 *.suo
 *.user
 *.userosscache
