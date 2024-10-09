@@ -1,13 +1,17 @@
-DROP PROCEDURE IF EXISTS `GetCompanyData`()
-CREATE PROCEDURE `GetCompanyData`()
+USE accounting;
+
+DROP PROCEDURE IF EXISTS GetCompanyData;
+DELIMITER //
+CREATE PROCEDURE GetCompanyData()
 BEGIN
   SELECT 
-	month
-	, Year
-    , purchase
-    , sales
-    , inventory_levels
-    , profit
-    , new_customers
-FROM accounting.monthly_data;
-END
+    `month`,       -- Escaping the column name 'month'
+    `year`,        -- Escaping the column name 'year'
+    purchase,
+    sales,
+    inventory_levels,
+    profit,
+    new_customers
+  FROM accounting.monthly_data;
+END //
+DELIMITER ;
