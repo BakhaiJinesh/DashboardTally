@@ -1,0 +1,166 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    font-size: 14px;
+    z-index: 1000;
+}
+
+.dashboard-container {
+    flex: 1;
+    width: 90%;
+    margin: 100px auto 60px auto; /* Space for header and footer */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.chart-row {
+    width: 100%;
+    margin-bottom: 30px;
+    display: flex; /* Use flexbox for layout */
+    justify-content: center; /* Center content */
+}
+
+.chart-container {
+    flex: 1; /* Allow containers to grow */
+    margin: 0 10px; /* Horizontal margin */
+    min-width: 300px; /* Minimum width for chart containers */
+    max-width: 800px; /* Maximum width for chart containers */
+}
+
+canvas {
+    background-color: white;
+    border: 1px solid #ccc;
+    height: 350px; /* Reduced height for charts */
+}
+
+@media (max-width: 768px) {
+    header {
+        font-size: 20px; /* Smaller font size for header */
+    }
+    footer {
+        font-size: 12px; /* Smaller font size for footer */
+    }
+    .chart-container {
+        min-width: 100%; /* Full width on smaller screens */
+        max-width: 100%; /* Prevent overflow */
+        margin: 10px 0; /* Vertical margin for stacked layout */
+    }
+    canvas {
+        height: 250px; /* Smaller height for charts on mobile */
+    }
+}
+
+/* Additional styles for login page */
+.login-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    margin: 100px auto; /* Center the login form */
+}
+
+.login-container h2 {
+    text-align: center;
+    margin-right: 30px;
+    margin-bottom: 20px; /* Space below the title */
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 85%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    width: 90%;
+    padding: 8px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+.message {
+    margin-top: 10px;
+    color: red;
+    text-align: center; /* Center the message text */
+}
+
+
+    /* Additional styles for the login button */
+.login-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px;
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Make the link behave like a button */
+    margin-right: 80px; /* Space to the right of the button */
+}
+
+.login-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+header {
+    display: flex; /* Use flexbox for header layout */
+    justify-content: space-between; /* Space between title and button */
+    align-items: center; /* Center vertically */
+    padding: 20px; /* Added padding for better spacing */
+    background-color: #333; /* Ensure header has a background color */
+    color: #fff; /* White text for visibility */
+}
+
+.company-title {
+    margin-left: 20px; /* Space to the left of the company name */
+}
