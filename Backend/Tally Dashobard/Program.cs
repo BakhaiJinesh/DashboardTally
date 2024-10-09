@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 using Tally_Dashobard.Data;
+using Tally_Dashobard.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +18,11 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+
+
 builder.Services.AddScoped<GetDashboard>();
+builder.Services.AddScoped<LoginDetails>();
+builder.Services.AddSingleton<IConnectionStringProvider, AppSettingsConnectionStringProvider>();
 
 
 
