@@ -1,5 +1,7 @@
 DROP DATABASE IF EXISTS accounting;
 CREATE DATABASE accounting;
+USE accounting;
+
 
 CREATE TABLE monthly_data (
     id SERIAL PRIMARY KEY,
