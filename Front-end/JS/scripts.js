@@ -6,8 +6,22 @@ $(document).ready(function () {
     // Check if userId is available
     if (!userId) {
         console.error('User ID not found in session storage.');
-        return; // Exit if no user ID is found
+        window.location.href = '../HTML/login.html'; // Adjust path as necessary
+        return; // Stop further script execution
     }
+    
+    // If userId is found, change the button to Logout
+    $('#authButton').text('Logout');
+    $('#authButton').attr('href', '#'); // Set href to # for logout action
+
+    // Set up logout functionality
+    $('#authButton').on('click', function () {
+        // Clear localStorage
+        localStorage.removeItem('userId');
+        // Redirect to login page
+        window.location.href = '../HTML/login.html'; // Adjust path as necessary
+    });
+
 
     // API URL (adjust to your API endpoint)
     var apiUrl = `https://localhost:44385/Dashboard/GetDashboard?userid=${userId}`; // Use userId from session storage

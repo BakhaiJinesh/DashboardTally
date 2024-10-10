@@ -6,6 +6,9 @@ $(document).ready(function () {
         var username = $('#username').val();
         var password = $('#password').val();
 
+        // Disable the submit button
+        $('#submitButton').attr('disabled', true);
+
         // Create the data object to send to the API
         var data = {
             username: username,
@@ -25,25 +28,27 @@ $(document).ready(function () {
                 // Check if the response is a number (indicating user ID)
                 if (!isNaN(response)) {
                     $('#message').text('Login successful!'); // Display success message
-                    
-                    // Optionally, redirect or perform other actions based on response
-                    // Redirect to index.html with user ID as a query parameter
+
                     // Store the user ID in local storage (or session storage)
                     localStorage.setItem('userId', response);
 
                     // Redirect to index.html without userId in the URL
                     window.location.href = "index.html";
-
-                    // Example: window.location.href = "dashboard.html";
                 } else {
                     // Display message from the response for failed login
                     $('#message').text('Login failed: ' + (response || 'Unknown error')); 
+                    alert('Login failed: ' + (response || 'Unknown error'));
+                    // Re-enable the button if login failed
+                    $('#submitButton').attr('disabled', false);
                 }
             },
             error: function (xhr, status, error) {
                 // Handle errors
                 $('#message').text('Login failed: ' + xhr.responseText); // Display error message
                 console.error("Error:", error);
+
+                // Re-enable the button if there was an error
+                $('#submitButton').attr('disabled', false);
             }
         });
     });

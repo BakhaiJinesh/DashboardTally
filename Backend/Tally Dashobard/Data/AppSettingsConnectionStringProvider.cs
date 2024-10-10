@@ -13,7 +13,7 @@ namespace Tally_Dashobard.Data
 
         public string GetConnectionString()
         {
-            return _configuration.GetConnectionString("DefaultConnection");
+            return _configuration.GetConnectionString("DefaultConnection") ?? "Server=localhost;Database=accounting;User ID=root;Password=Admin;";
         }
     }
 
