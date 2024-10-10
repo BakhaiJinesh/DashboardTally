@@ -11,7 +11,7 @@
 <body>
     <header>
         <div>Company's Dashboard</div>
-        <a href="../HTML/login.html" class="login-button">Login</a>
+        <a href="#" id="authButton" class="login-button">Login</a> <!-- Use an ID for the button -->
     </header>
     <div class="dashboard-container">
         <div class="chart-row">
@@ -24,5 +24,30 @@
         All rights reserved by XYZ Ltd.
     </footer>
     <script src="../JS/scripts.js"></script> <!-- Your custom script -->
+    <script>
+        $(document).ready(function () {
+            // Check if userId exists in localStorage
+            const userId = localStorage.getItem('userId');
+    
+            // If userId is not found in localStorage, redirect to login page
+            if (!userId) {
+                window.location.href = '../HTML/login.html'; // Adjust path as necessary
+                return; // Stop further script execution
+            }
+    
+            // If userId is found, change the button to Logout
+            $('#authButton').text('Logout');
+            $('#authButton').attr('href', '#'); // Set href to # for logout action
+    
+            // Set up logout functionality
+            $('#authButton').on('click', function () {
+                // Clear localStorage
+                localStorage.removeItem('userId');
+                // Redirect to login page
+                window.location.href = '../HTML/login.html'; // Adjust path as necessary
+            });
+        });
+    </script>
+    
 </body>
 </html>

@@ -1,6 +1,16 @@
 $(document).ready(function () {
+
+    // Retrieve user ID from session storage
+    const userId = localStorage.getItem('userId');
+
+    // Check if userId is available
+    if (!userId) {
+        console.error('User ID not found in session storage.');
+        return; // Exit if no user ID is found
+    }
+
     // API URL (adjust to your API endpoint)
-    var apiUrl = "https://localhost:44385/Home"; // Replace with your actual API URL
+    var apiUrl = `https://localhost:44385/Dashboard/GetDashboard?userid=${userId}`; // Use userId from session storage
 
     // Call the API using jQuery's AJAX method
     $.ajax({

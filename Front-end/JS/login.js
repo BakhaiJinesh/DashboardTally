@@ -13,7 +13,7 @@ $(document).ready(function () {
         };
 
         // API URL (replace with your actual API endpoint)
-        var apiUrl = "http://localhost:3000/login"; // Adjust the port as necessary
+        var apiUrl = "https://localhost:44385/Dashboard/Login"; // Adjust the port as necessary
 
         // Send the POST request using jQuery's AJAX method
         $.ajax({
@@ -22,9 +22,23 @@ $(document).ready(function () {
             contentType: "application/json",
             data: JSON.stringify(data), // Convert the data object to a JSON string
             success: function (response) {
-                // Handle a successful login
-                $('#message').text('Login successful!'); // Display success message
-                // Optionally, redirect or perform other actions based on response
+                // Check if the response is a number (indicating user ID)
+                if (!isNaN(response)) {
+                    $('#message').text('Login successful!'); // Display success message
+                    
+                    // Optionally, redirect or perform other actions based on response
+                    // Redirect to index.html with user ID as a query parameter
+                    // Store the user ID in local storage (or session storage)
+                    localStorage.setItem('userId', response);
+
+                    // Redirect to index.html without userId in the URL
+                    window.location.href = "index.html";
+
+                    // Example: window.location.href = "dashboard.html";
+                } else {
+                    // Display message from the response for failed login
+                    $('#message').text('Login failed: ' + (response || 'Unknown error')); 
+                }
             },
             error: function (xhr, status, error) {
                 // Handle errors
