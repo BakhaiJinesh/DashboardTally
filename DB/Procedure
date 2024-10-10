@@ -2,7 +2,7 @@ USE accounting;
 
 DROP PROCEDURE IF EXISTS GetCompanyData;
 DELIMITER //
-CREATE PROCEDURE GetCompanyData(_userId int)
+CREATE PROCEDURE GetCompanyData(_userDesignationid int)
 BEGIN
     SELECT 
         mt.TransactionType,
@@ -17,7 +17,7 @@ BEGIN
     JOIN 
         users u ON u.userid = mtd.userid
     WHERE 
-        u.userid = _userId
+        u.DesignationID = _userDesignationid
     GROUP BY 
         mt.TransactionType,
         TransactionMonth,   -- Use the alias for better clarity
@@ -34,14 +34,65 @@ DELIMITER \\
 CREATE PROCEDURE GetChartRoles(IN inputUserId INT)
 BEGIN
     SELECT 
-        CASE 
-            WHEN users.Designation = 'CEO' THEN JSON_ARRAY('CEO', 'CTO', 'Manager', 'User')   -- CEO can see all roles
-            WHEN users.Designation = 'CTO' THEN JSON_ARRAY('CTO', 'Manager', 'User')           -- CTO can see CTO, Manager, User
-            WHEN users.Designation = 'Manager' THEN JSON_ARRAY('Manager', 'User')                  -- Manager can see Manager, User
-            ELSE JSON_ARRAY('User')  -- All other users see only 'User'
-        END AS Roles
-    FROM Users users
-    WHERE users.userid = inputUserId;
+		CASE 
+			WHEN accessLevel.Code = 'CEO' THEN 
+				JSON_ARRAY(
+					JSON_OBJECT('AccessID', al1.AccessID, 'Name', al1.Name),
+					JSON_OBJECT('AccessID', al2.AccessID, 'Name', al2.Name),
+					JSON_OBJECT('AccessID', al3.AccessID, 'Name', al3.Name),
+					JSON_OBJECT('AccessID', al4.AccessID, 'Name', al4.Name)
+				)   -- CEO can see all roles
+			WHEN accessLevel.Code = 'CTO' THEN 
+				JSON_ARRAY(
+					JSON_OBJECT('AccessID', al2.AccessID, 'Name', al2.Name),
+					JSON_OBJECT('AccessID', al3.AccessID, 'Name', al3.Name),
+					JSON_OBJECT('AccessID', al4.AccessID, 'Name', al4.Name)
+				)           -- CTO can see CTO, Manager, User
+			WHEN accessLevel.Code = 'MGR' THEN 
+				JSON_ARRAY(
+					JSON_OBJECT('AccessID', al3.AccessID, 'Name', al3.Name),
+					JSON_OBJECT('AccessID', al4.AccessID, 'Name', al4.Name)
+				)                  -- Manager can see Manager, User
+			ELSE 
+				JSON_ARRAY(
+					JSON_OBJECT('AccessID', al4.AccessID, 'Name', al4.Name)
+				)  -- All other users see only 'User'
+		END AS Roles
+	FROM Users users
+	JOIN AccessLevel accessLevel ON accessLevel.AccessID = users.DesignationID
+	JOIN AccessLevel al1 ON al1.Code = 'CEO'
+	JOIN AccessLevel al2 ON al2.Code = 'CTO'
+	JOIN AccessLevel al3 ON al3.Code = 'MGR'
+	JOIN AccessLevel al4 ON al4.Code = 'USR'
+	WHERE users.userid = inputUserId;
 END \\
+
+DELIMITER ;
+
+
+
+DROP PROCEDURE IF EXISTS ExportFile;
+DELIMITER //
+
+CREATE PROCEDURE ExportFile(IN designation_id INT)
+BEGIN
+    -- The SELECT statement to retrieve user transaction details
+    SELECT 
+        u.UserName,
+        mt.TransactionType,
+        mtd.TransactionDate,
+        mtd.Cost,
+        mtd.Quantity
+    FROM 
+        moduletransaction mt
+    JOIN 
+        ModuleTransactionDusersusersetails mtd ON mt.transactionid = mtd.transactionid
+    JOIN 
+        users u ON u.userid = mtd.userid
+    JOIN 
+        accesslevel access ON access.accessid = u.DesignationID
+    WHERE 
+        u.DesignationID = designation_id; -- Use the input parameter for filtering
+END //
 
 DELIMITER ;
