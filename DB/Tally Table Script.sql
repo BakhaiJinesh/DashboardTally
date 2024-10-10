@@ -20,7 +20,7 @@ CREATE TABLE Users (
     UserName VARCHAR(100) NOT NULL, -- Name of the user
     Email VARCHAR(150) UNIQUE NOT NULL, -- Email of the user
     Password VARCHAR(255) NOT NULL, -- Password for authentication
-    Designation varchar(20) NOT NULL, -- User Designation
+    Designation VARCHAR(20) NOT NULL, -- User Designation
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Timestamp when the user was created
 );
 

@@ -2,7 +2,7 @@ USE accounting;
 
 DROP PROCEDURE IF EXISTS GetCompanyData;
 DELIMITER //
-CREATE PROCEDURE GetCompanyData()
+CREATE PROCEDURE GetCompanyData(_userId int)
 BEGIN
     SELECT 
         mt.TransactionType,
@@ -17,7 +17,7 @@ BEGIN
     JOIN 
         users u ON u.userid = mtd.userid
     WHERE 
-        u.userid = 1
+        u.userid = _userId
     GROUP BY 
         mt.TransactionType,
         TransactionMonth,   -- Use the alias for better clarity
@@ -25,6 +25,7 @@ BEGIN
 END //
 
 DELIMITER ;
+
 
 
 DROP PROCEDURE IF EXISTS GetChartRoles;
