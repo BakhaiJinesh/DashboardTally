@@ -21,11 +21,11 @@ VALUES
 
 
 -- Insert a user
-INSERT INTO Users (UserName, Email, Password) 
-VALUES ('CEO', 'ceo@example.com', 'securepassword'),
-('CTO', 'cto@example.com', 'ctosecurepassword'),
-('Manager', 'manager@example.com', 'managersecurepassword'),
-('USER', 'user@example.com', 'usersecurepassword');
+INSERT INTO Users (UserName, Email, Password,LevelAccess) 
+VALUES ('CEO', 'ceo@example.com', 'securepassword',1),
+('CTO', 'cto@example.com', 'ctosecurepassword',2),
+('Manager', 'manager@example.com', 'managersecurepassword',3),
+('USER', 'user@example.com', 'usersecurepassword',4);
 
 -- Insert transaction types (Purchase and Sale)
 INSERT INTO ModuleTransaction (TransactionType, Description) 
