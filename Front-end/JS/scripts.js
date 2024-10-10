@@ -39,8 +39,47 @@ $(document).ready(function () {
     });
 
 
+        
+    // Set up click event for the share icon
+    $('#shareChartIcon').on('click', function (e) {
+        e.preventDefault(); // Prevent default action (if it's a link)
+        const accessID = localStorage.getItem('AccessID');
+
+        // Show the modal
+        $('#shareModal').css('display', 'block');
+    });
+
+    // Close modal when the user clicks on <span> (x)
+    $('.close-button').on('click', function() {
+        $('#shareModal').css('display', 'none');
+        $('#shareForm')[0].reset(); // Clear the form fields
+    });
+
+    // Close modal when the user clicks anywhere outside of the modal
+    $(window).on('click', function(event) {
+        if (event.target.id === 'shareModal') {
+            $('#shareModal').css('display', 'none');
+            $('#shareForm')[0].reset(); // Clear the form fields
+        }
+    });
+
+    // Handle form submission
+    $('#shareForm').on('submit', function(e) {
+        e.preventDefault(); // Prevent form submission
+        const email = $('#email').val();
+        const accessID = localStorage.getItem('AccessID');
+        
+        // Close the modal after sending
+        $('#shareModal').css('display', 'none');
+        $('#shareForm')[0].reset(); // Clear the form fields after sending
+
+        sendEmail(email,accessID);
+    });
+
+
+
     // API URL for GetChartRoles (adjust to your API endpoint)
-    var GetChartRoles = apiUrl + `GetChartRoles?userid=${userId}`;
+    var GetChartRoles = apiUrl + `Dashboard/GetChartRoles?userid=${userId}`;
 
     // Call the API for chart roles data
     $.ajax({
@@ -88,7 +127,7 @@ $(document).ready(function () {
 
     // Function to call the GetDashboard API
     function fetchDashboardData(accessID) {
-        var GetDashboard = apiUrl + `GetDashboard?userid=${accessID}`;
+        var GetDashboard = apiUrl + `Dashboard/GetDashboard?userid=${accessID}`;
         
         $.ajax({
             url: GetDashboard,
@@ -149,10 +188,10 @@ $(document).ready(function () {
         });
     }
     
-
+    //Get Chart Data Export
     function downloadChartData(accessID) {
         // Construct the URL for fetching the chart data
-        const exportUri = apiUrl + `Export?userid=${accessID}`;
+        const exportUri = apiUrl + `Dashboard/Export?userid=${accessID}`;
     
         // Use jQuery's AJAX to fetch the data
         $.ajax({
@@ -174,7 +213,8 @@ $(document).ready(function () {
                 // Create a link element to trigger the download
                 const a = document.createElement('a');
                 a.href = exportUri;
-                a.download = 'chartData.csv'; // Specify the default filename
+                var date = new Date();
+                a.download = 'Report ' + date.getFullYear() + " _ " + (date.getMonth() + 1) + " _ " + date.getDate() + '.xlsx'; // Specify the default filename
     
                 // Append the link to the body and trigger the download
                 document.body.appendChild(a);
@@ -195,6 +235,35 @@ $(document).ready(function () {
    
 
 
+    // Function to send email
+    function sendEmail(email,accessID) {
+    // Define the API URL
+    const emailUri = apiUrl + 'Email/send-email';
+
+      // Prepare the data to send
+      const dataToSend = JSON.stringify({
+        email: email,
+        accessID: parseInt(accessID,10) // Include the accessID in the payload
+    });
+
+
+     // Send the email using AJAX
+    $.ajax({
+        url: emailUri,
+        method: 'POST',
+        contentType: 'application/json',
+        data: dataToSend, // Send the email and accessID as JSON
+        success: function (response) {
+            $('#shareModal').hide(); // Hide the modal
+            $('#email').val(''); // Clear the input field
+            alert('Email sent successfully!');
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            console.error('Error sending email:', errorThrown);
+            alert('Failed to send email. Please try again.'); // Error message
+        }
+    });
+}
 
 
     // Helper function to generate random colors for chart bars

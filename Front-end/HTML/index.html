@@ -30,6 +30,11 @@
                 <a href="#" id="downloadChartIcon" class="download-icon" title="Download Chart">
                     <i class="fas fa-download"></i> <!-- Download icon -->
                 </a>
+
+                <a href="#" id="shareChartIcon" class="share-icon" title="Share Chart">
+                    <i class="fas fa-envelope"></i> <!-- Email icon from Font Awesome -->
+                </a>
+                
             </div>
         </div>
     </div>
@@ -40,5 +45,20 @@
 
     <script src="../JS/scripts.js"></script>
     <script src="../JS/config.js"></script>
+
+
+    <!-- Modal Structure -->
+<div id="shareModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2>Share Chart</h2>
+        <form id="shareForm">
+            <label for="email">Email:</label>
+            <input type="email" id="email" class="email" name="email" required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</div>
+
 </body>
 </html>
