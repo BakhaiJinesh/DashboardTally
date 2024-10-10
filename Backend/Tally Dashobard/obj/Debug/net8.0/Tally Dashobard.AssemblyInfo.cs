@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Tally Dashobard")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+402bfa40d002060ead42c45771d92f273f1da9fb")]
 [assembly: System.Reflection.AssemblyProductAttribute("Tally Dashobard")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Tally Dashobard")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
