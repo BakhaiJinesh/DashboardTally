@@ -10,10 +10,10 @@ INSERT INTO AccessLevel (AccessID, Code, Name, Description) VALUES
 
 -- Insert a user
 INSERT INTO Users (UserName, Email, Password,DesignationId) 
-VALUES ('CEO', 'ceo@example.com', 'ceo',1),
-('CTO', 'cto@example.com', 'cto',2),
-('Manager', 'manager@example.com', 'man',3),
-('USER', 'user@example.com', 'use',4);
+VALUES ('user1', 'ceo@example.com', 'ceo',1),
+('user2', 'cto@example.com', 'cto',2),
+('user3', 'manager@example.com', 'man',3),
+('user4', 'user@example.com', 'use',4);
 
 -- Insert transaction types (Purchase and Sale)
 INSERT INTO ModuleTransaction (TransactionType, Description) 
