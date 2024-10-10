@@ -13,7 +13,7 @@ namespace Tally_Dashobard.Data
             _connectionString = "Server=localhost;Database=accounting;User ID=root;Password=Admin;";
         }
 
-        public DataTable GetDashboardData()
+        public DataTable GetDashboardData(int userid)
         {
             DataTable dataTable = new DataTable();
 
@@ -22,8 +22,12 @@ namespace Tally_Dashobard.Data
                 try
                 {
                     connection.Open();
-                    using (MySqlCommand command = new MySqlCommand("CALL GetCompanyData();", connection))
+                    using (MySqlCommand command = new MySqlCommand("CALL GetCompanyData(@userId);", connection))
                     {
+
+                        // Add parameter to command
+                        command.Parameters.AddWithValue("@userId", userid);
+
                         using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
                         {
                             adapter.Fill(dataTable);

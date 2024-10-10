@@ -17,7 +17,7 @@ namespace Tally_Dashobard.Data
 
         public string LoginDetailsStatus(string username,string password) 
         { 
-            string result = "Invalid User";
+            string result = "Invalid Credentials";
             
             
             using (MySqlConnection connection = new MySqlConnection(_connectionString))

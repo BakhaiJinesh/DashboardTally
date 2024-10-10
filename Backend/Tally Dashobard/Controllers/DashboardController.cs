@@ -20,9 +20,9 @@ namespace Tally_Dashobard.Controllers
 
         [HttpGet]
         [Route("GetDashboard")]
-        public IActionResult GetDashboardData()
+        public IActionResult GetDashboardData(int userid)
         {
-            DataTable dashboardData = _dashboardDataAccess.GetDashboardData();
+            DataTable dashboardData = _dashboardDataAccess.GetDashboardData(userid);
 
             // Convert DataTable to a dynamic list or an array
             var result = new List<Dictionary<string, object>>();
