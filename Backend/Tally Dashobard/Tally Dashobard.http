@@ -1,0 +1,6 @@
+@Tally_Dashobard_HostAddress = http://localhost:5077
+
+GET {{Tally_Dashobard_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
