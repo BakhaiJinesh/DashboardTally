@@ -2,25 +2,20 @@ DROP DATABASE IF EXISTS accounting;
 CREATE DATABASE accounting;
 USE accounting;
 
-
-CREATE TABLE monthly_data (
-    id SERIAL PRIMARY KEY,
-    month VARCHAR(20) NOT NULL,
-    year INT NOT NULL,
-    purchase DECIMAL(10, 2),
-    sales DECIMAL(10, 2),
-    inventory_levels DECIMAL(10, 2),
-    profit DECIMAL(10, 2),
-    new_customers INT
+-- User Access Level
+CREATE TABLE AccessLevel (
+    AccessID INT PRIMARY KEY,
+    Code VARCHAR(10),
+    Name VARCHAR(50),
+    Description VARCHAR(255)
 );
-
 
 CREATE TABLE Users (
     UserID SERIAL PRIMARY KEY, -- Auto-incremented unique identifier for each user
     UserName VARCHAR(100) NOT NULL, -- Name of the user
     Email VARCHAR(150) UNIQUE NOT NULL, -- Email of the user
     Password VARCHAR(255) NOT NULL, -- Password for authentication
-    Designation VARCHAR(20) NOT NULL, -- User Designation
+    DesignationID INT NOT NULL REFERENCES AccessLevel(AccessID), -- User Designation
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Timestamp when the user was created
 );
 
