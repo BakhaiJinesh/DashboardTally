@@ -25,3 +25,22 @@ BEGIN
 END //
 
 DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS GetChartRoles;
+DELIMITER \\
+
+CREATE PROCEDURE GetChartRoles(IN inputUserId INT)
+BEGIN
+    SELECT 
+        CASE 
+            WHEN users.Designation = 'CEO' THEN JSON_ARRAY('CEO', 'CTO', 'Manager', 'User')   -- CEO can see all roles
+            WHEN users.Designation = 'CTO' THEN JSON_ARRAY('CTO', 'Manager', 'User')           -- CTO can see CTO, Manager, User
+            WHEN users.Designation = 'Manager' THEN JSON_ARRAY('Manager', 'User')                  -- Manager can see Manager, User
+            ELSE JSON_ARRAY('User')  -- All other users see only 'User'
+        END AS Roles
+    FROM Users users
+    WHERE users.userid = inputUserId;
+END \\
+
+DELIMITER ;
