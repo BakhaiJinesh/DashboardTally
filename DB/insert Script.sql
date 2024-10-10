@@ -1,31 +1,19 @@
 USE accounting;
 
-
-
--- Insert the data for 2023
-INSERT INTO monthly_data (month, year, purchase, sales, inventory_levels, profit, new_customers)
-VALUES 
-('January', 2023, 500, 800, 300, 500, 50),
-('February', 2023, 600, 900, 280, 600, 60),
-('March', 2023, 550, 850, 260, 550, 55),
-('April', 2023, 700, 1000, 320, 700, 70),
-('May', 2023, 750, 1100, 340, 750, 80),
-('June', 2023, 800, 1200, 300, 800, 90),
-('July', 2023, 850, 1250, 310, 850, 95),
-('August', 2023, 900, 1300, 290, 900, 100),
-('September', 2023, 950, 1350, 280, 950, 105),
-('October', 2023, 1000, 1400, 270, 1000, 110),
-('November', 2023, 1050, 1450, 260, 1050, 115),
-('December', 2023, 1100, 1500, 250, 1100, 120);
-
+-- User Access Level
+INSERT INTO AccessLevel (AccessID, Code, Name, Description) VALUES
+(1, 'CEO', 'Chief Executive Officer', 'Highest level of access and authority.'),
+(2, 'CTO', 'Chief Technology Officer', 'Responsible for technology and technical direction.'),
+(3, 'MGR', 'Manager', 'Oversees teams and projects with medium access.'),
+(4, 'USR', 'User', 'Standard access for regular users.');
 
 
 -- Insert a user
-INSERT INTO Users (UserName, Email, Password,Designation) 
-VALUES ('CEO', 'ceo@example.com', 'ceo','CEO'),
-('CTO', 'cto@example.com', 'cto','CTO'),
-('Manager', 'manager@example.com', 'man','Manager'),
-('USER', 'user@example.com', 'use','User');
+INSERT INTO Users (UserName, Email, Password,DesignationId) 
+VALUES ('CEO', 'ceo@example.com', 'ceo',1),
+('CTO', 'cto@example.com', 'cto',2),
+('Manager', 'manager@example.com', 'man',3),
+('USER', 'user@example.com', 'use',4);
 
 -- Insert transaction types (Purchase and Sale)
 INSERT INTO ModuleTransaction (TransactionType, Description) 
