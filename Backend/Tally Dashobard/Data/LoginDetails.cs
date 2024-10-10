@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using System.Configuration;
 using System.Data;
 
 namespace Tally_Dashobard.Data
@@ -8,10 +9,10 @@ namespace Tally_Dashobard.Data
         private string _connectionString;
         private readonly AppDbContext appDbContext;
 
-        public LoginDetails(AppDbContext appDbContext)
+        public LoginDetails(AppDbContext appDbContext,IConfiguration configuration)
         {
             // Connection string for MySQL database
-            _connectionString = "Server=localhost;Database=accounting;User ID=root;Password=Admin;";
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
             this.appDbContext = appDbContext; 
         }
 

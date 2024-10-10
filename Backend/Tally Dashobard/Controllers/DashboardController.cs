@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Data;
+using System.Security.Cryptography;
+using System.Text;
 using Tally_Dashobard.Data;
 using Tally_Dashobard.DTO;
 
@@ -12,12 +15,14 @@ namespace Tally_Dashobard.Controllers
         private readonly GetDashboard _dashboardDataAccess;
         private readonly LoginDetails _loginDetails;
         private readonly GetChartRoles _chartRoles;
+        private readonly ExportFile _exportFile;
 
-        public DashboardController(GetDashboard dashboardDataAccess, LoginDetails loginDetails, GetChartRoles chartRoles)
+        public DashboardController(GetDashboard dashboardDataAccess, LoginDetails loginDetails, GetChartRoles chartRoles, ExportFile exportFile)
         {
             _dashboardDataAccess = dashboardDataAccess;
             _loginDetails = loginDetails;
             _chartRoles = chartRoles;
+            _exportFile = exportFile;
         }
 
 
@@ -82,6 +87,26 @@ namespace Tally_Dashobard.Controllers
 
             // Return the result as JSON
             return Ok(result);
+        }
+
+
+        [HttpGet]
+        [Route("Export")]
+        public IActionResult ExportFile(int userid)
+        {
+            DataTable dashboardData = _exportFile.FIleDatatable(userid);
+
+            // Convert the DataTable to CSV
+            string csvContent = _exportFile.ConvertDataTableToCSV(dashboardData);
+
+            // Set the content type and the file name
+            var csvBytes = Encoding.UTF8.GetBytes(csvContent);
+            var result = new FileContentResult(csvBytes, "text/csv")
+            {
+                FileDownloadName = "Report " + DateTime.Now.ToString("yyyy-MM-dd") + ".csv"
+            };
+
+            return result; // Return the CSV as a downloadable file
         }
     }
 }

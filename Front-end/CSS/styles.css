@@ -37,14 +37,52 @@ footer {
 .dashboard-container {
     flex: 1;
     width: 90%;
-    margin: 100px auto 60px auto; /* Space for header and footer */
+    height: 90%;
+    margin: 10% auto auto auto;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
+.dashboard-content {
+    display: flex;
+    width: 90%;
+    height: 90%;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap:5px;
+}
+
+
+/* styles.css */
+.sidebar {
+    width: 200px; /* Set the width as needed */
+    max-height: 400px; /* Set a maximum height */
+    overflow-y: auto; /* Enable vertical scrolling if needed */
+    background-color: #f0f0f0; /* Optional background color */
+}
+
+
+#itemList {
+    list-style-type: none; /* Remove default list styling */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+}
+
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
 .chart-row {
-    width: 100%;
+    flex:0.7;
     margin-bottom: 30px;
     display: flex; /* Use flexbox for layout */
     justify-content: center; /* Center content */
@@ -55,12 +93,18 @@ footer {
     margin: 0 10px; /* Horizontal margin */
     min-width: 300px; /* Minimum width for chart containers */
     max-width: 800px; /* Maximum width for chart containers */
+    position: relative; /* Establish a positioning context */
+}
+
+#combinedChart {
+    width: 100% !important; /* Force the canvas to fill the container */
+    height: 100% !important; /* Force the canvas to fill the container */
 }
 
 canvas {
     background-color: white;
     border: 1px solid #ccc;
-    height: 350px; /* Reduced height for charts */
+    height: 450px; /* Reduced height for charts */
 }
 
 @media (max-width: 768px) {
@@ -163,4 +207,24 @@ header {
 
 .company-title {
     margin-left: 20px; /* Space to the left of the company name */
+}
+
+
+
+.download-icon {
+    position: absolute; /* Position relative to the chart container */
+    top: 7%; /* Center vertically */
+    right: 10px; /* Distance from the right */
+    transform: translateY(-50%); /* Center the icon vertically */
+    display: inline-block;
+    font-size: 24px; /* Adjust the size as needed */
+    color: #4CAF50; /* Icon color */
+    text-decoration: none; /* Remove underline */
+    background-color: white; /* Optional: add background for better visibility */
+    padding: 5px; /* Optional: add some padding */
+}
+
+.download-icon:hover {
+    color: #45a049; /* Darker color on hover */
+    background-color: #f0f0f0; /* Change background color on hover */
 }

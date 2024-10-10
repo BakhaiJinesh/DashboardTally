@@ -8,14 +8,13 @@ namespace Tally_Dashobard.Data
     public class AppDbContext : DbContext
     {
 
-        private readonly IConfiguration _configuration;
-        public string _connectionString = "Server=localhost;Database=accounting;User ID=root;Password=Admin;";
+        private string _connectionString;
 
         public DbSet<LoginDTO> users { get; set; }
 
         public AppDbContext(IConfiguration configuration)
         {
-            _configuration = configuration;
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

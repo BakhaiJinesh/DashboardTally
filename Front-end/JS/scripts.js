@@ -1,11 +1,12 @@
 $(document).ready(function () {
 
-    // Retrieve user ID from session storage
+    // Retrieve user ID from local storage
     const userId = localStorage.getItem('userId');
+    const apiUrl = config.apiBaseUrl;
 
     // Check if userId is available
     if (!userId) {
-        console.error('User ID not found in session storage.');
+        console.error('User ID not found in local storage.');
         window.location.href = '../HTML/login.html'; // Adjust path as necessary
         return; // Stop further script execution
     }
@@ -23,75 +24,178 @@ $(document).ready(function () {
     });
 
 
-    // API URL (adjust to your API endpoint)
-    var apiUrl = `https://localhost:44385/Dashboard/GetDashboard?userid=${userId}`; // Use userId from session storage
+    // Event listener for item clicks
+    $('#itemList').on('click', 'li', function () {
+        const accessID = $(this).data('accessId'); // Get AccessID from the clicked list item
+        localStorage.setItem('AccessID',accessID);
+        fetchDashboardData(accessID); // Call the function to fetch data using the selected AccessID
+    });
 
-    // Call the API using jQuery's AJAX method
+    // Set up click event for the download icon
+    $('#downloadChartIcon').on('click', function (e) {
+        e.preventDefault(); // Prevent default action (if it's a link)
+        const accessID = localStorage.getItem('AccessID'); // Get AccessID from the clicked list item
+        downloadChartData(accessID); // Call function to download data
+    });
+
+
+    // API URL for GetChartRoles (adjust to your API endpoint)
+    var GetChartRoles = apiUrl + `GetChartRoles?userid=${userId}`;
+
+    // Call the API for chart roles data
     $.ajax({
-        url: apiUrl,
+        url: GetChartRoles,
         type: "GET",
         contentType: "application/json",
-        success: function (data) {
-            // Initialize arrays for chart data
-            const labels = [...new Set(data.map(item => `${item.TransactionMonth} ${item.TransactionYear}`))]; // Extract unique month-year labels
-            const transactionTypes = [...new Set(data.map(item => item.TransactionType))]; // Extract unique transaction types
+        success: function (response) {
+            
+            // Check if response has Roles data
+            if (response && response.length > 0 && response[0].Roles) {
+                // Parse the 'Roles' JSON string into an array of objects
+                const roles = JSON.parse(response[0].Roles);
 
-            // Prepare datasets for each transaction type
-            const datasets = transactionTypes.map(type => {
-                const filteredData = data.filter(item => item.TransactionType === type);
-                return {
-                    label: type,
-                    data: labels.map(label => {
-                        const matchingItem = filteredData.find(item => `${item.TransactionMonth} ${item.TransactionYear}` === label);
-                        return matchingItem ? matchingItem.Cost : 0; // Use 'Cost' for data or 0 if no match
-                    }),
-                    backgroundColor: getRandomColor(),
-                    borderColor: getRandomColor(),
-                    borderWidth: 1
-                };
-            });
+                // Get reference to the list in HTML
+                const itemList = $('#itemList');
 
-            // Generate the chart
-            const combinedChart = new Chart(document.getElementById('combinedChart').getContext('2d'), {
-                type: 'bar',
-                data: {
-                    labels: labels, // Set labels to the month-year
-                    datasets: datasets // Set datasets for each transaction type
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            labels: {
-                                boxWidth: 20 // Width of the colored box in the legend
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            stacked: false
-                        },
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Cost' // Y-axis title indicating it's the cost data
-                            }
-                        }
-                    }
-                }
-            });
+                // Clear existing list items (if needed)
+                itemList.empty();
+
+                // Add each role name as a list item dynamically
+                roles.forEach(role => {
+                    const listItem = $('<li></li>').text(role.Name).data('accessId', role.AccessID);
+                    itemList.append(listItem); // Append new list item
+                });
+
+                // Get the AccessID of the first role in the array
+                const firstAccessID = roles[0].AccessID;
+
+                localStorage.setItem('AccessID',firstAccessID);
+                
+                // Now call the GetDashboard API with the first AccessID
+                fetchDashboardData(firstAccessID);
+
+            } else {
+                console.error("No Roles found in the response.");
+            }
         },
         error: function (xhr, status, error) {
-            // Handle error
-            console.log("API Call Failed");
+            console.log("GetChartRoles API Call Failed");
             console.error("Error:", error);
             console.error("Status:", status);
             console.error("XHR Response:", xhr.responseText);
         }
     });
+
+    // Function to call the GetDashboard API
+    function fetchDashboardData(accessID) {
+        var GetDashboard = apiUrl + `GetDashboard?userid=${accessID}`;
+        
+        $.ajax({
+            url: GetDashboard,
+            type: "GET",
+            contentType: "application/json",
+            success: function (data) {
+                const labels = [...new Set(data.map(item => `${item.TransactionMonth} ${item.TransactionYear}`))];
+                const transactionTypes = [...new Set(data.map(item => item.TransactionType))];
+    
+                const datasets = transactionTypes.map(type => {
+                    const filteredData = data.filter(item => item.TransactionType === type);
+                    return {
+                        label: type,
+                        data: labels.map(label => {
+                            const matchingItem = filteredData.find(item => `${item.TransactionMonth} ${item.TransactionYear}` === label);
+                            return matchingItem ? matchingItem.Cost : 0;
+                        }),
+                        backgroundColor: getRandomColor(),
+                        borderColor: getRandomColor(),
+                        borderWidth: 1
+                    };
+                });
+    
+                // Destroy the existing chart if it exists
+                if (window.myChart) {
+                    window.myChart.destroy();
+                }
+    
+                // Create a new chart instance
+                window.myChart = new Chart(document.getElementById('combinedChart').getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: { boxWidth: 20 }
+                            }
+                        },
+                        scales: {
+                            x: { stacked: false },
+                            y: {
+                                beginAtZero: true,
+                                title: { display: true, text: 'Cost' }
+                            }
+                        }
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error("API Call Failed", error);
+            }
+        });
+    }
+    
+
+    function downloadChartData(accessID) {
+        // Construct the URL for fetching the chart data
+        const exportUri = apiUrl + `Export?userid=${accessID}`;
+    
+        // Use jQuery's AJAX to fetch the data
+        $.ajax({
+            url: exportUri,
+            method: 'GET',
+            xhrFields: {
+                responseType: 'blob' // Set response type to blob for file download
+            },
+            success: function (data,textStatus, xhr) {
+                console.log('date',data);
+                console.log('textStatus',textStatus);
+                console.log('xhr',xhr);
+                // Create a blob object from the data
+                const blob = new Blob([data], { type: 'application/octet-stream' });
+    
+                // Create a URL for the blob
+                const exportUri = window.URL.createObjectURL(blob);
+    
+                // Create a link element to trigger the download
+                const a = document.createElement('a');
+                a.href = exportUri;
+                a.download = 'chartData.csv'; // Specify the default filename
+    
+                // Append the link to the body and trigger the download
+                document.body.appendChild(a);
+                a.click();
+    
+                // Clean up by removing the link and revoking the object URL
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(exportUri);
+                }, 100);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error downloading chart data:', error);
+                alert('An error occurred while downloading the data. Please try again.');
+            }
+        });
+    }
+   
+
+
+
 
     // Helper function to generate random colors for chart bars
     function getRandomColor() {
@@ -102,4 +206,5 @@ $(document).ready(function () {
         }
         return color;
     }
+
 });

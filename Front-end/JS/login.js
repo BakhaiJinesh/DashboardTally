@@ -1,4 +1,8 @@
 $(document).ready(function () {
+
+    const apiUrl = config.apiBaseUrl;
+    
+
     $('#loginForm').on('submit', function (event) {
         event.preventDefault(); // Prevent the default form submission
 
@@ -16,11 +20,11 @@ $(document).ready(function () {
         };
 
         // API URL (replace with your actual API endpoint)
-        var apiUrl = "https://localhost:44385/Dashboard/Login"; // Adjust the port as necessary
+        var LoginUri = apiUrl + "Login"; // Adjust the port as necessary
 
         // Send the POST request using jQuery's AJAX method
         $.ajax({
-            url: apiUrl,
+            url: LoginUri,
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(data), // Convert the data object to a JSON string
@@ -37,16 +41,23 @@ $(document).ready(function () {
                 } else {
                     // Display message from the response for failed login
                     $('#message').text('Login failed: ' + (response || 'Unknown error')); 
-                    alert('Login failed: ' + (response || 'Unknown error'));
+                    // alert('Login failed: ' + (response || 'Unknown error'));
                     // Re-enable the button if login failed
                     $('#submitButton').attr('disabled', false);
                 }
             },
             error: function (xhr, status, error) {
-                // Handle errors
-                $('#message').text('Login failed: ' + xhr.responseText); // Display error message
+                if (xhr.status === 0) {
+                    // Handle net::ERR_CONNECTION_REFUSED or similar network issues
+                    $('#message').text('502 Bad Gateway: Unable to reach the server. Please try again later.');
+                    alert('502 Bad Gateway: Unable to reach the server. Please try again later.');
+                } else {
+                    // Handle other errors (e.g., server errors or bad requests)
+                    $('#message').text('Login failed: ' + xhr.responseText);
+                }
+            
                 console.error("Error:", error);
-
+            
                 // Re-enable the button if there was an error
                 $('#submitButton').attr('disabled', false);
             }

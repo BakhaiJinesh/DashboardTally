@@ -23,6 +23,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<GetDashboard>();
 builder.Services.AddScoped<LoginDetails>();
 builder.Services.AddScoped<GetChartRoles>();
+builder.Services.AddScoped<ExportFile>();
 builder.Services.AddSingleton<IConnectionStringProvider, AppSettingsConnectionStringProvider>();
 
 

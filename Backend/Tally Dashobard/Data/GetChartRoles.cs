@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using System.Configuration;
 using System.Data;
 
 namespace Tally_Dashobard.Data
@@ -7,10 +8,10 @@ namespace Tally_Dashobard.Data
     {
         private string _connectionString;
 
-        public GetChartRoles()
+        public GetChartRoles(IConfiguration configuration)
         {
             // Connection string for MySQL database
-            _connectionString = "Server=localhost;Database=accounting;User ID=root;Password=Admin;";
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
         public DataTable GetChartRolesData(int userid)

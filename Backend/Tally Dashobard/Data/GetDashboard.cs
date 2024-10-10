@@ -7,10 +7,10 @@ namespace Tally_Dashobard.Data
     {
         private string _connectionString;
 
-        public GetDashboard()
+        public GetDashboard(IConfiguration configuration)
         {
             // Connection string for MySQL database
-            _connectionString = "Server=localhost;Database=accounting;User ID=root;Password=Admin;";
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
         public DataTable GetDashboardData(int userid)
