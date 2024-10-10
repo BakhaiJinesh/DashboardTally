@@ -4,14 +4,24 @@ DROP PROCEDURE IF EXISTS GetCompanyData;
 DELIMITER //
 CREATE PROCEDURE GetCompanyData()
 BEGIN
-  SELECT 
-    `month`,       -- Escaping the column name 'month'
-    `year`,        -- Escaping the column name 'year'
-    purchase,
-    sales,
-    inventory_levels,
-    profit,
-    new_customers
-  FROM accounting.monthly_data;
+    SELECT 
+        mt.TransactionType,
+        DATE_FORMAT(mtd.TransactionDate, '%b') AS TransactionMonth,   -- Abbreviated month format (MMM)
+        EXTRACT(YEAR FROM mtd.TransactionDate) AS TransactionYear,    -- Extracting year
+        SUM(mtd.Cost) AS Cost,
+        SUM(mtd.Quantity) AS Quantity
+    FROM 
+        moduletransaction mt
+    JOIN 
+        ModuleTransactionDusersusersetails mtd ON mt.transactionid = mtd.transactionid
+    JOIN 
+        users u ON u.userid = mtd.userid
+    WHERE 
+        u.userid = 1
+    GROUP BY 
+        mt.TransactionType,
+        TransactionMonth,   -- Use the alias for better clarity
+        TransactionYear;    -- Use the alias for better clarity
 END //
+
 DELIMITER ;
