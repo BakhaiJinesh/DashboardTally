@@ -77,6 +77,13 @@ $(document).ready(function () {
     });
 
 
+        
+    
+    // Set up click event for the download icon
+    $('#whatsappButton').on('click', function (e) {
+       alert('Click on whatsapp Button')
+    });
+
 
     // API URL for GetChartRoles (adjust to your API endpoint)
     var GetChartRoles = apiUrl + `Dashboard/GetChartRoles?userid=${userId}`;
@@ -122,6 +129,11 @@ $(document).ready(function () {
             console.error("Error:", error);
             console.error("Status:", status);
             console.error("XHR Response:", xhr.responseText);
+            if (xhr.status === 0) {
+                // Handle net::ERR_CONNECTION_REFUSED or similar network issues
+                $('#message').text('502 Bad Gateway: Unable to reach the server. Please try again later.');
+                alert('502 Bad Gateway: Unable to reach the server. Please try again later.');
+            }
         }
     });
 

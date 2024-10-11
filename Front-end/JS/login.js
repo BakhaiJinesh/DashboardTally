@@ -20,7 +20,7 @@ $(document).ready(function () {
         };
 
         // API URL (replace with your actual API endpoint)
-        var LoginUri = apiUrl + "Login"; // Adjust the port as necessary
+        var LoginUri = apiUrl + "Dashboard/Login"; // Adjust the port as necessary
 
         // Send the POST request using jQuery's AJAX method
         $.ajax({

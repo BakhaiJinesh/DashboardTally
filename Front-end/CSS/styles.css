@@ -218,14 +218,14 @@ header {
     transform: translateY(-50%); /* Center the icon vertically */
     display: inline-block;
     font-size: 24px; /* Adjust the size as needed */
-    color: #4CAF50; /* Icon color */
+    color: #61c240; /* Icon color */
     text-decoration: none; /* Remove underline */
     background-color: white; /* Optional: add background for better visibility */
     padding: 5px; /* Optional: add some padding */
 }
 
 .download-icon:hover {
-    color: #45a049; /* Darker color on hover */
+    color: #92a82e; /* Darker color on hover */
     background-color: #f0f0f0; /* Change background color on hover */
 }
 
@@ -293,4 +293,25 @@ header {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+
+
+.whatsapp-icon {
+    position: absolute; /* Position relative to the chart container */
+    top: 26%; /* Center vertically */
+    right: 10px; /* Distance from the right */
+    transform: translateY(-50%); /* Center the icon vertically */
+    display: inline-block;
+    font-size: 24px; /* Adjust the size as needed */
+    color: #61c240; /* Icon color */
+    text-decoration: none; /* Remove underline */
+    background-color: white; /* Optional: add background for better visibility */
+    padding: 5px; /* Optional: add some padding */
+}
+
+
+.whatsapp-icon:hover {
+    color: #92a82e; /* Darker color on hover */
+    background-color: #f0f0f0; /* Change background color on hover */
 }
