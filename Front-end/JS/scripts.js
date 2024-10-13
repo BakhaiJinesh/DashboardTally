@@ -226,7 +226,7 @@ $(document).ready(function () {
                 const a = document.createElement('a');
                 a.href = exportUri;
                 var date = new Date();
-                a.download = 'Report ' + date.getFullYear() + " _ " + (date.getMonth() + 1) + " _ " + date.getDate() + '.xlsx'; // Specify the default filename
+                a.download = 'Report ' + date.getFullYear() + " _ " + (date.getMonth() + 1) + " _ " + date.getDate() + '.csv'; // Specify the default filename
     
                 // Append the link to the body and trigger the download
                 document.body.appendChild(a);

@@ -302,7 +302,7 @@ header {
     top: 26%; /* Center vertically */
     right: 10px; /* Distance from the right */
     transform: translateY(-50%); /* Center the icon vertically */
-    display: inline-block;
+    display: none;
     font-size: 24px; /* Adjust the size as needed */
     color: #61c240; /* Icon color */
     text-decoration: none; /* Remove underline */
